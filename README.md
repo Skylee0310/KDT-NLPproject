@@ -44,7 +44,7 @@
    | F1_Score  | 0.125 |
 </div>
 </details>
-
+<!--❤️여기서부터 화은언니❤️-->
 <details>
 <summary> 이화은 <a href="https://github.com/Skylee0310" height="5" width="10" target="_blank">
 	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : LSTM 모델을 활용한 가사로 장르 분류하기 / ppt 21p~45p </summary>
@@ -54,7 +54,7 @@
 
 </div>
 </details>
-
+<!--❤️여기서부터 이윤서❤️-->
 <details>
 <summary> 이윤서 <a href="https://github.com/voo0o08" height="5" width="10" target="_blank">
 	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : CNN과 LSTM을 활용하여 주파수로 장르 분류하기 / ppt 46p~61p </summary>
@@ -182,11 +182,14 @@ score → 0.5
 </div>
 </details>
 
-
-
-
-### 손예림 : RandomForest 모델을 활용하여 주파수로 장르 분류하기
-
+<!--❤️여기서부터 예림언니❤️-->
+<details>
+<summary> 손예림 <a href="https://github.com/	osllzd" height="5" width="10" target="_blank">
+	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : RandomForest 모델을 활용하여 주파수로 장르 분류하기 / ppt 62p~77p </summary>
+<div markdown="1">
+내용추가해주세요
+</div>
+</details>
 
 
 
