@@ -1,22 +1,25 @@
 # KDT-NLPproject
 노래 가사와 소리를 통한 노래 장르 유추하기
 
-# 발표 일자
-2024.04.05.금.
+# 프로젝트 기간 
+2024/04/03~2024/04/05
 
 # 역할분담
 **1. 자연어 처리**         
 
- - 임소영 : RNN 모델을 활용한 가사로 장르 유추하기
- - 이화은 : LSTM 모델을 활용한 가사로 장르 유추하기
+ - 임소영 : RNN 모델을 활용한 가사로 장르 분류하기 
+ - 이화은 : LSTM 모델을 활용한 가사로 장르 분류하기 
     
  
 **2. 주파수 분석**
-- 손예림 : RandomForest 모델을 활용하여 주파수로 장르 유추하기
-- 이윤서 : CNN과 RSTM을 활용하여 주파수로 장르 유추하기
+- 손예림 : RandomForest 모델을 활용하여 주파수로 장르 분류하기 
+- 이윤서 : CNN과 LSTM을 활용하여 주파수로 장르 분류하기 
 
-# 세부 내용
-### 임소영 : RNN 모델을 활용한 가사로 장르 유추하기
+# 세부 내용 (이름 클릭 시 상세내용 확인 가능)
+<details>
+<summary> 임소영 <a href="https://github.com/YimSoYoung1001" height="5" width="10" target="_blank">
+	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : RNN 모델을 활용한 가사로 장르 분류하기  / ppt 04p~20p </summary>
+<div markdown="1">
 - 크롤링을 사용하여 멜론 웹사이트에서 노래 관련 정보 수집하였습니다.
 - 수집된 정보를 전처리 실시하였습니다.
 
@@ -39,17 +42,154 @@
    | Precision | 0.11  |
    | Recall    | 0.142 |
    | F1_Score  | 0.125 |
+</div>
+</details>
+<!--❤️여기서부터 화은언니❤️-->
+<details>
+<summary> 이화은 <a href="https://github.com/Skylee0310" height="5" width="10" target="_blank">
+	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : LSTM 모델을 활용한 가사로 장르 분류하기 / ppt 21p~45p </summary>
+<div markdown="1">
+ 
+내용추가해주세요
 
-### 이화은 : LSTM 모델을 활용한 가사로 장르 유추하기
+</div>
+</details>
+<!--❤️여기서부터 이윤서❤️-->
+<details>
+<summary> 이윤서 <a href="https://github.com/voo0o08" height="5" width="10" target="_blank">
+	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : CNN과 LSTM을 활용하여 주파수로 장르 분류하기 / ppt 46p~61p </summary>
+<div markdown="1">
+발라드곡과 댄스곡을 30초 단위로 편집하여 장르 분석
+
+## ✏️음성 데이터의 특징
+
+- 주파수 domain에서는 시간적 특성을 볼 수 없음
+    
+![image](https://github.com/voo0o08/KDT5_NLP_PROJECT/assets/155411941/bf999f9b-6545-4059-bc3d-e8c6094a2ec9)
+
+    
+- 진동수가 작으면 저음
+- wav 파일이란?
+    - 소리를 일정한 시간 간격마다 기록한 **실수배열 → 디지털**
+
+| 이미지 | 오디오 |
+| --- | --- |
+| RGB 픽셀의 값  | 소리의 세기 |
+| 해상도 | sampling rate (1초당 샘플의 개수, 1초당 Hz) → X축 해상도<br>bit depth → y축 해상도 <br>일반적인 음원 샘플링 속도 : 44,100 Hz /48,000 Hz<br>일반적인 음성인식 작업 : 16,000 Hz / 8,000 Hz|<br>
+
+→ 용량을 생각하여 16,000 Hz로 샘플링
+
+---
+
+![image](https://github.com/voo0o08/KDT5_NLP_PROJECT/assets/155411941/20019441-c79e-4878-8687-565ae1ab4c5d)
 
 
+x축을 시간으로 두고 y축을 소리의 크기로 두었을 때 베이스, 드럼이 많이 들어가는 댄스곡이 소리가 튀는 부분이 많은 것을 확인할 수 있음
 
-### 손예림 : RandomForest 모델을 활용하여 주파수로 장르 유추하기
+→ 주파수 영역과 시간 영역을 모두 고려하기 위해 spectrogram 사용 
+
+## ✏️spectrogram이란?
+
+- 시간에 따라 변하는 신호의 주파수 영역에서 **시각적**으로 표현한 것
+- x = 시간, y = 주파수, z = 진폭
+
+![image](https://github.com/voo0o08/KDT5_NLP_PROJECT/assets/155411941/f9ce96ad-8bcb-4d87-b5b7-88bbe2595b12)
 
 
+## ✏️CNN
 
-### 이윤서 : CNN과 RSTM을 활용하여 주파수로 장르 유추하기
+### 1. 데이터 불러오기
 
+음원 샘플 SR -> 44,100Hz / 일반 음성 작업 -> 16,000Hz
+
+```python
+# sr = 1초당 몇개의 데이터를 샘플링을 할지 
+y, sr = librosa.load(path+"/"+file_name, sr=16000)
+```
+
+### 2. mfcc 피쳐 뽑기
+
+n_ffcc -> 추출할 MFCC 계수의 수
+n_fft -> 푸리에 변환할 윈도우 크기
+hop_length -> 두 윈도우 사이의 샘플링 간격
+
+```python
+n_fft = 2048 # window의 크기
+hop_length = 512  # window간 겹치는 부분 일반적으로 n_fft / 4
+
+mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20, n_fft=n_fft, hop_length=hop_length) # sr 주의!!! 
+```
+
+### 3. 이미지로 저장
+
+![image](https://github.com/voo0o08/KDT5_NLP_PROJECT/assets/155411941/9a9733cf-ac50-4839-8da4-a17a7eab35e6)
+
+
+```python
+ librosa.display.specshow(mfcc, sr=16000, hop_length=hop_length) # vmin=min_value, vmax=max_value
+  plt.savefig(save_path, pad_inches = 0, bbox_inches = 'tight')
+```
+
+### 4. 학습
+
+80개 이미지 -> train
+10개 이미지 -> Test
+10개 이미지 -> 예측용으로 빼두기
+
+![image](https://github.com/voo0o08/KDT5_NLP_PROJECT/assets/155411941/87ffd3d2-fc16-4f31-a8b8-30f21f02441a)
+![image](https://github.com/voo0o08/KDT5_NLP_PROJECT/assets/155411941/1c573bc1-a9c6-436a-a826-a091c2e11fcb)
+
+
+### 5. 새로운 데이터 예측 결과
+
+발라드 10개 -> 10개 정답
+
+댄스곡 10개 -> 10개 정답
+
+---
+
+## ✏️LSTM
+
+이지의 x축이 시간 timestamp니까 LSTM으로도 학습이 가능하지 않을까?
+
+### 데이터 전처리
+
+```python
+# 전처리를 위한 변환
+preprocessing = transforms.Compose([
+    transforms.Resize((100, 100)),  # 이미지 크기 조정
+    transforms.Grayscale(),  # 이미지를 흑백으로 변환
+    transforms.ToTensor(),  # 텐서로 변환
+])
+```
+
+LSTM이 4차원은 못받아서 Grayscale로 변환
+문장과는 달리 이미지는 사이즈가 모두 같기때문에 패딩과정 불필요
+
+### 결과
+
+score → 0.5
+
+- LSTM을 하기엔 feature의 수가 적음
+
+---
+
+## ✏️결론
+
+- 음성 데이터도 이미지로 표현이 가능함
+- RNN은 글만, CNN은 사진만 들어가는 것이 아님
+
+</div>
+</details>
+
+<!--❤️여기서부터 예림언니❤️-->
+<details>
+<summary> 손예림 <a href="https://github.com/	osllzd" height="5" width="10" target="_blank">
+	<img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><a> : RandomForest 모델을 활용하여 주파수로 장르 분류하기 / ppt 62p~77p </summary>
+<div markdown="1">
+내용추가해주세요
+</div>
+</details>
 
 
 
